@@ -1,9 +1,9 @@
 import { join } from 'path';
 import { Module } from '@nestjs/common';
 import { ServeStaticModule } from '@nestjs/serve-static';
-import { PokemonModule } from './pokemon/pokemon.module';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { PokemonModule } from 'src/pokemon/pokemon.module';
 
 @Module({
   imports: [
