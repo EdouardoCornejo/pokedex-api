@@ -19,3 +19,6 @@ export class Pokemon extends Document {
 }
 
 export const PokemonSchema = SchemaFactory.createForClass(Pokemon);
+PokemonSchema.methods.crypto = function () {
+  return 'this cript password';
+}; // exemplo de metodo
