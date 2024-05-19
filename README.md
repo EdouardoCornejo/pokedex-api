@@ -5,27 +5,41 @@
 [circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
 [circleci-url]: https://circleci.com/gh/nestjs/nest
 
-# Ejecutar en desarrollo 
+# Ejecutar en desarrollo
 
-1. Clonar el repositorio 
-2. Tener nvm  20.11.0 Instalado 
+1. Clonar el repositorio
+2. Tener nvm 20.11.0 Instalado
+
 ```
   nvm use 20.11.0
 ```
+
 3. Ejecutar
-```  
-  npm install 
+
 ```
-4. Tener Nest CLI Instalado 
-``` 
-npm i -g @nestjs/cli 
-``` 
-5. Levantar la base de datos 
-```  
+  npm install
+```
+
+4. Tener Nest CLI Instalado
+
+```
+npm i -g @nestjs/cli
+```
+
+5. Levantar la base de datos
+
+```
 docker-compose up -d
- ```
+```
 
+6.  Reconstruir la base de datos con la semilla
 
-# Stack usado 
-* MongoDB
-* NestJs
+```
+http://localhost:3000/api/v2/seed
+```
+
+# Stack usado
+
+- MongoDB
+- NestJs
+- Axios
