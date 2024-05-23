@@ -22,7 +22,7 @@ export class AxiosAdapter implements HttpAdapter {
   }
   async put<T>(url: string, body: Record<string, unknown>): Promise<T> {
     try {
-      const { data } = await this.axiosInstance.post<T>(url, body);
+      const { data } = await this.axiosInstance.put<T>(url, body);
       return data;
     } catch (error) {
       throw new Error(`Error in PUT request: ${error.message}`);

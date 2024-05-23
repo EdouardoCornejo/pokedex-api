@@ -4,7 +4,8 @@ import { Logger, ValidationPipe } from '@nestjs/common';
 import { CustomLoggerService } from 'src/shared/config/log';
 
 async function bootstrap() {
-  const port = process.env.PORT || 3000;
+  const defaultPort = 3000;
+  const port = process.env.PORT || defaultPort;
   const app = await NestFactory.create(AppModule, {
     logger: new CustomLoggerService(),
   });
