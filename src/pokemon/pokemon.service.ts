@@ -10,6 +10,7 @@ import { Model, isValidObjectId } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { Pokemon } from 'src/pokemon/entities/pokemon.entity';
 import { PaginationDto } from 'src/common/dto/pagination.dto';
+import { ConfigService } from '@nestjs/config';
 
 enum Type {
   create = 'create',
@@ -20,6 +21,7 @@ export class PokemonService {
   constructor(
     @InjectModel(Pokemon.name)
     private readonly pokemonModel: Model<Pokemon>,
+    private readonly configService: ConfigService,
   ) {}
 
   async create(createPokemonDto: CreatePokemonDto) {
@@ -35,7 +37,8 @@ export class PokemonService {
   }
 
   findAll(paginationDto: PaginationDto) {
-    const { limit = 10, offset = 0 } = paginationDto;
+    const { limit = this.configService.get('defaultLimit'), offset = 0 } =
+      paginationDto;
 
     return this.pokemonModel
       .find()
