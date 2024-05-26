@@ -10,5 +10,6 @@ export const EnvConfig = () => ({
   environment: process.env.NODE_ENV || NODE_ENV.DEV,
   mongodb: process.env.DB_MONGODB_URI,
   mongodbName: process.env.DB_MONGODB_NAME,
+  defaultLimit: Number(process.env.DEFAULT_LIMIT) || 10,
   port: Number(process.env.PORT) || defaultPort,
 });
