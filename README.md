@@ -153,7 +153,7 @@ Prefijo global: `/api/v2`. Documentación interactiva en [`/api/v2/docs`](http:/
 | Método   | Ruta                      | Descripción                                             | Cuerpo / parámetros                |
 | -------- | ------------------------- | ------------------------------------------------------- | ---------------------------------- |
 | `POST`   | `/pokemon`                | Crea un Pokémon                                         | `{ "no": 1, "name": "bulbasaur" }` |
-| `GET`    | `/pokemon?limit=&offset=` | Lista paginada ordenada por `no`                        | `limit` ≥ 1, `offset` > 0          |
+| `GET`    | `/pokemon?limit=&offset=` | Lista paginada ordenada por `no`                        | `limit` ≥ 1, `offset` ≥ 0          |
 | `GET`    | `/pokemon/:param`         | Busca por número, `ObjectId` o nombre                   | —                                  |
 | `PATCH`  | `/pokemon/:param`         | Actualiza un Pokémon localizado por número, id o nombre | `{ "name"?, "no"? }`               |
 | `DELETE` | `/pokemon/:param`         | Elimina por `ObjectId` (solo acepta el id)              | —                                  |
@@ -191,7 +191,7 @@ Prefijo global: `/api/v2`. Documentación interactiva en [`/api/v2/docs`](http:/
 
 - `HttpAdapter` (clase abstracta) → `AxiosAdapter`, que envuelve `get`, `post`, `put`, `patch` y `delete` y devuelve solo `data`. La instancia `api` usa `API_POKEMON_URL` como `baseURL` (por defecto `https://pokeapi.co/api/v2`).
 - `ParseMongoIdPipe` valida que el parámetro sea un `ObjectId`.
-- `PaginationDto` con `limit` y `offset` opcionales.
+- `PaginationDto` con `limit` (≥ 1) y `offset` (≥ 0, por defecto `0`) opcionales.
 
 ### Flujo de una petición
 

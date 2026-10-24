@@ -16,12 +16,12 @@ export class PaginationDto {
 
   @ApiPropertyOptional({
     description:
-      'Number of Pokemon to skip (sorted by Pokedex number). Must be a positive number; omit it to start from the first Pokemon.',
-    minimum: 1,
+      'Number of Pokemon to skip (sorted by Pokedex number). Defaults to 0.',
+    minimum: 0,
     example: 20,
   })
   @IsOptional()
-  @IsPositive()
   @IsNumber()
+  @Min(0)
   offset?: number;
 }
