@@ -71,7 +71,7 @@ npm install
 
 ### Variables de entorno
 
-Crea un `.env` a partir de `.env.example`. El esquema Joi exige `API_POKEMON_URL`, `NODE_ENV` y `DB_MONGODB_URI`, así que deben estar todas presentes:
+Crea un `.env` a partir de `.env.example` (incluye una sección de desarrollo y otra de producción). El esquema Joi exige `API_POKEMON_URL`, `NODE_ENV` y `DB_MONGODB_URI`; la plantilla ya las trae, solo falta completar `DB_MONGODB_URI`:
 
 ```env
 API_POKEMON_URL=https://pokeapi.co/api/v2
@@ -119,18 +119,18 @@ docker-compose -f docker-compose.prod.yaml --env-file .env.prod up --build
 
 ### Scripts disponibles
 
-| Script                | Descripción                               |
-| --------------------- | ----------------------------------------- |
-| `npm run start:dev`   | Modo desarrollo con _watch_               |
-| `npm run start:debug` | Modo depuración con _watch_               |
-| `npm run build`       | Compila a `dist/`                         |
-| `npm run start`       | Ejecuta la build (`node dist/main`)       |
-| `npm run start:prod`  | `nest start`                              |
-| `npm run lint`        | ESLint con autocorrección                 |
-| `npm run format`      | Prettier sobre `src/` y `test/`           |
-| `npm run test`        | Tests unitarios (Jest)                    |
-| `npm run test:e2e`    | Tests end-to-end                          |
-| `npm run test:cov`    | Cobertura de tests                        |
+| Script                | Descripción                         |
+| --------------------- | ----------------------------------- |
+| `npm run start:dev`   | Modo desarrollo con _watch_         |
+| `npm run start:debug` | Modo depuración con _watch_         |
+| `npm run build`       | Compila a `dist/`                   |
+| `npm run start`       | Ejecuta la build (`node dist/main`) |
+| `npm run start:prod`  | `nest start`                        |
+| `npm run lint`        | ESLint con autocorrección           |
+| `npm run format`      | Prettier sobre `src/` y `test/`     |
+| `npm run test`        | Tests unitarios (Jest)              |
+| `npm run test:e2e`    | Tests end-to-end                    |
+| `npm run test:cov`    | Cobertura de tests                  |
 
 ---
 
@@ -138,16 +138,16 @@ docker-compose -f docker-compose.prod.yaml --env-file .env.prod up --build
 
 Prefijo global: `/api/v2`.
 
-| Método   | Ruta                        | Descripción                                               | Cuerpo / parámetros         |
-| -------- | --------------------------- | --------------------------------------------------------- | --------------------------- |
-| `POST`   | `/pokemon`                  | Crea un Pokémon                                           | `{ "no": 1, "name": "bulbasaur" }` |
-| `GET`    | `/pokemon?limit=&offset=`   | Lista paginada ordenada por `no`                          | `limit` ≥ 1, `offset` > 0   |
-| `GET`    | `/pokemon/:param`           | Busca por número, `ObjectId` o nombre                     | —                           |
-| `PATCH`  | `/pokemon/:param`           | Actualiza un Pokémon localizado por número, id o nombre   | `{ "name"?, "no"? }`        |
-| `DELETE` | `/pokemon/:id`              | Elimina por `ObjectId`                                    | —                           |
-| `GET`    | `/seed`                     | Reinicia la colección con datos de la PokeAPI             | —                           |
+| Método   | Ruta                      | Descripción                                             | Cuerpo / parámetros                |
+| -------- | ------------------------- | ------------------------------------------------------- | ---------------------------------- |
+| `POST`   | `/pokemon`                | Crea un Pokémon                                         | `{ "no": 1, "name": "bulbasaur" }` |
+| `GET`    | `/pokemon?limit=&offset=` | Lista paginada ordenada por `no`                        | `limit` ≥ 1, `offset` > 0          |
+| `GET`    | `/pokemon/:param`         | Busca por número, `ObjectId` o nombre                   | —                                  |
+| `PATCH`  | `/pokemon/:param`         | Actualiza un Pokémon localizado por número, id o nombre | `{ "name"?, "no"? }`               |
+| `DELETE` | `/pokemon/:id`            | Elimina por `ObjectId`                                  | —                                  |
+| `GET`    | `/seed`                   | Reinicia la colección con datos de la PokeAPI           | —                                  |
 
-> `PATCH` solo aplica la actualización cuando el cuerpo incluye `name`.
+> `PATCH` aplica cualquier campo enviado (`name`, `no`) y devuelve el Pokémon con los cambios; si incluye `name`, se guarda en minúsculas.
 
 ---
 
@@ -251,14 +251,14 @@ pokedex-api/
 
 ## Personalización
 
-| Variable          | Significado                                   | Por defecto (Joi / código)      |
-| ----------------- | --------------------------------------------- | ------------------------------- |
-| `API_POKEMON_URL` | URL base de la PokeAPI (obligatoria)          | `https://pokeapi.co/api/v2`\*   |
-| `NODE_ENV`        | Entorno: `dev` o `prod` (obligatoria)         | —                               |
-| `DB_MONGODB_URI`  | URI de conexión a MongoDB (obligatoria)       | —                               |
-| `DB_MONGODB_NAME` | Nombre de la base de datos                    | `pokemonDB`                     |
-| `DEFAULT_LIMIT`   | `limit` por defecto en el listado             | `10`                            |
-| `PORT`            | Puerto HTTP                                   | `3000`                          |
+| Variable          | Significado                             | Por defecto (Joi / código)    |
+| ----------------- | --------------------------------------- | ----------------------------- |
+| `API_POKEMON_URL` | URL base de la PokeAPI (obligatoria)    | `https://pokeapi.co/api/v2`\* |
+| `NODE_ENV`        | Entorno: `dev` o `prod` (obligatoria)   | —                             |
+| `DB_MONGODB_URI`  | URI de conexión a MongoDB (obligatoria) | —                             |
+| `DB_MONGODB_NAME` | Nombre de la base de datos              | `pokemonDB`                   |
+| `DEFAULT_LIMIT`   | `limit` por defecto en el listado       | `10`                          |
+| `PORT`            | Puerto HTTP                             | `3000`                        |
 
 \* Valor de respaldo del adaptador `api`; Joi la exige igualmente.
 

@@ -77,13 +77,13 @@ export class PokemonService {
 
     if (updatePokemonDto.name) {
       updatePokemonDto.name = updatePokemonDto.name.toLowerCase();
+    }
 
-      try {
-        const updatedPokemon = await pokemon.updateOne(updatePokemonDto);
-        return { ...pokemon.toJSON(), ...updatedPokemon };
-      } catch (error) {
-        this.handleExceptions(error, Type.update, param);
-      }
+    try {
+      await pokemon.updateOne(updatePokemonDto);
+      return { ...pokemon.toJSON(), ...updatePokemonDto };
+    } catch (error) {
+      this.handleExceptions(error, Type.update, param);
     }
   }
 
