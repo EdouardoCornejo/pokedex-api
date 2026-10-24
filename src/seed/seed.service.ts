@@ -1,6 +1,8 @@
 import {
   // BadRequestException,
+  HttpException,
   Injectable,
+  InternalServerErrorException,
   Logger,
   NotFoundException,
 } from '@nestjs/common';
@@ -62,6 +64,11 @@ export class SeedService {
       return 'Seed executed successfully';
     } catch (error) {
       this.logger.error('error', error.stack, error.message);
+
+      if (error instanceof HttpException) throw error;
+      throw new InternalServerErrorException(
+        'Seed could not be executed, check the server logs',
+      );
     }
   }
 }

@@ -1,5 +1,11 @@
 import { Controller, Get } from '@nestjs/common';
-import { ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
+import {
+  ApiInternalServerErrorResponse,
+  ApiOkResponse,
+  ApiOperation,
+  ApiTags,
+} from '@nestjs/swagger';
+import { ErrorResponseDto } from 'src/common/dto/error-response.dto';
 import { SeedService } from './seed.service';
 
 @ApiTags('Seed')
@@ -16,6 +22,10 @@ export class SeedController {
   @ApiOkResponse({
     description: 'Seed finished.',
     schema: { type: 'string', example: 'Seed executed successfully' },
+  })
+  @ApiInternalServerErrorResponse({
+    description: 'PokeAPI could not be reached or the import failed.',
+    type: ErrorResponseDto,
   })
   excecuteSeed() {
     return this.seedService.executeSeed();

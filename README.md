@@ -116,7 +116,7 @@ Ahí están todos los endpoints agrupados por etiqueta (`Pokemon`, `Seed`), con 
 GET http://localhost:3000/api/v2/seed
 ```
 
-Borra todos los Pokémon e importa los 650 primeros desde la PokeAPI.
+Borra todos los Pokémon e importa los 650 primeros desde la PokeAPI. Si la PokeAPI no responde o la importación falla, devuelve `500` en lugar de una respuesta vacía.
 
 ### Build de producción con Docker
 
