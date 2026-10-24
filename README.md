@@ -8,6 +8,7 @@ API **REST** de Pokémon construida con **NestJS**, **Mongoose** y **MongoDB**. 
 ![Tech](https://img.shields.io/badge/Mongoose-8-880000)
 ![Tech](https://img.shields.io/badge/Axios-1-5A29E4)
 ![Tech](https://img.shields.io/badge/Joi-17-0080FF)
+![Tech](https://img.shields.io/badge/Swagger-OpenAPI-85EA2D)
 ![Tech](https://img.shields.io/badge/Docker-Compose-2496ED)
 
 ---
@@ -23,6 +24,7 @@ API **REST** de Pokémon construida con **NestJS**, **Mongoose** y **MongoDB**. 
     - [Variables de entorno](#variables-de-entorno)
     - [Base de datos con Docker](#base-de-datos-con-docker)
     - [Levantar la API](#levantar-la-api)
+    - [Documentación (Swagger)](#documentación-swagger)
     - [Poblar la base de datos (seed)](#poblar-la-base-de-datos-seed)
     - [Build de producción con Docker](#build-de-producción-con-docker)
     - [Scripts disponibles](#scripts-disponibles)
@@ -98,6 +100,16 @@ npm run start:dev
 
 La API queda disponible en `http://localhost:3000/api/v2` y la página estática en `http://localhost:3000`.
 
+### Documentación (Swagger)
+
+Con la API levantada, abre **Swagger UI** en:
+
+```
+http://localhost:3000/api/v2/docs
+```
+
+Ahí están todos los endpoints agrupados por etiqueta (`Pokemon`, `Seed`), con sus parámetros (`limit`, `offset`, término de búsqueda), cuerpos de ejemplo y respuestas de éxito y error (`400`, `404`, `500`); se pueden probar con **Try it out**. El documento OpenAPI en JSON se sirve en `http://localhost:3000/api/v2/docs-json` (útil para importarlo en Postman o Insomnia).
+
 ### Poblar la base de datos (seed)
 
 ```
@@ -136,7 +148,7 @@ docker-compose -f docker-compose.prod.yaml --env-file .env.prod up --build
 
 ## Endpoints
 
-Prefijo global: `/api/v2`.
+Prefijo global: `/api/v2`. Documentación interactiva en [`/api/v2/docs`](http://localhost:3000/api/v2/docs).
 
 | Método   | Ruta                      | Descripción                                             | Cuerpo / parámetros                |
 | -------- | ------------------------- | ------------------------------------------------------- | ---------------------------------- |
@@ -144,7 +156,7 @@ Prefijo global: `/api/v2`.
 | `GET`    | `/pokemon?limit=&offset=` | Lista paginada ordenada por `no`                        | `limit` ≥ 1, `offset` > 0          |
 | `GET`    | `/pokemon/:param`         | Busca por número, `ObjectId` o nombre                   | —                                  |
 | `PATCH`  | `/pokemon/:param`         | Actualiza un Pokémon localizado por número, id o nombre | `{ "name"?, "no"? }`               |
-| `DELETE` | `/pokemon/:id`            | Elimina por `ObjectId`                                  | —                                  |
+| `DELETE` | `/pokemon/:param`         | Elimina por `ObjectId` (solo acepta el id)              | —                                  |
 | `GET`    | `/seed`                   | Reinicia la colección con datos de la PokeAPI           | —                                  |
 
 > `PATCH` aplica cualquier campo enviado (`name`, `no`) y devuelve el Pokémon con los cambios; si incluye `name`, se guarda en minúsculas.
@@ -153,7 +165,7 @@ Prefijo global: `/api/v2`.
 
 ## Cómo funciona
 
-`src/main.ts` crea la aplicación con `CustomLoggerService`, registra un `ValidationPipe` global (`whitelist`, `forbidNonWhitelisted`, `transform` y `enableImplicitConversion` para convertir los _query params_ a número), fija el prefijo `api/v2` y escucha en `PORT` (o `3000`).
+`src/main.ts` crea la aplicación con `CustomLoggerService`, registra un `ValidationPipe` global (`whitelist`, `forbidNonWhitelisted`, `transform` y `enableImplicitConversion` para convertir los _query params_ a número), fija el prefijo `api/v2`, genera el documento OpenAPI con `DocumentBuilder` y monta Swagger UI en `/api/v2/docs`, y escucha en `PORT` (o `3000`).
 
 ### 1. Configuración (`config`)
 
@@ -210,6 +222,7 @@ deleteMany() + insertMany() ──► MongoDB
 ## Tecnologías
 
 - **NestJS 10** — módulos, pipes y configuración.
+- **@nestjs/swagger 8** — documentación OpenAPI y Swagger UI en `/api/v2/docs`.
 - **MongoDB 5** + **Mongoose 8** (`@nestjs/mongoose`).
 - **Axios** detrás de un adaptador (`HttpAdapter`).
 - **@nestjs/config** + **Joi** para la configuración.
@@ -225,7 +238,7 @@ deleteMany() + insertMany() ──► MongoDB
 ```
 pokedex-api/
 ├── src/
-│   ├── main.ts                       # Bootstrap: ValidationPipe, prefijo api/v2
+│   ├── main.ts                       # Bootstrap: ValidationPipe, prefijo api/v2, Swagger
 │   ├── app.module.ts                 # Config, ServeStatic, Mongoose y módulos
 │   ├── config/
 │   │   ├── env.config.ts             # EnvConfig

@@ -1,3 +1,4 @@
+import { ApiProperty } from '@nestjs/swagger';
 import {
   IsNumber,
   IsPositive,
@@ -8,15 +9,24 @@ import {
 } from 'class-validator';
 
 export class CreatePokemonDto {
-  // isInt, Is Positive, min1
+  @ApiProperty({
+    description: 'National Pokedex number (unique).',
+    minimum: 1,
+    example: 1001,
+  })
   @IsNumber()
   @IsPositive()
   @Min(1)
   no: number;
 
+  @ApiProperty({
+    description: 'Pokemon name (unique, stored in lowercase).',
+    minLength: 3,
+    maxLength: 30,
+    example: 'wo-chien',
+  })
   @IsString()
   @MinLength(3)
   @MaxLength(30)
-  //isString, Minlenght 3, Maxlength 30
   name: string;
 }
